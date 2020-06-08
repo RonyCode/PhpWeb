@@ -30,7 +30,7 @@ $cursos = $repositorioDeCursos->findAll();
         <ul class="list-group">
             <?php foreach ($cursos as $curso): ?>
                 <li class="list-group-item">
-                    <?= $curso->getDescricao() ?>
+                    <?= $curso->getDescric() ?>
                 </li>
             <?php endforeach; ?>
         </ul>

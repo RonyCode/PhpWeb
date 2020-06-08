@@ -1,3 +1,12 @@
+<?php
+
+namespace Alura\Phpweb\Controller;
+
+class FormularioDeInsercao
+{
+    public function processaRequisicao()
+    {
+        ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,3 +30,7 @@
 </div>
 </body>
 </html>
+
+        <?php
+    }
+}
