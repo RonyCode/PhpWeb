@@ -1,11 +1,12 @@
 <?php
 
+use Alura\Phpweb\Entity\Curso;
+use Alura\Phpweb\Infra\EntityManagerCreator;
+
 require __DIR__ . '/../vendor/autoload.php';
 
-$entityManager = (new \Alura\Phpweb\Infra\EntityManagerCreator())->getEntityManager();
-$repositorioDeCursos = $entityManager->getRepository(
-    \Alura\Phpweb\Entity\Curso::class
-);
+$entityManager = (new EntityManagerCreator())->getEntityManager();
+$repositorioDeCursos = $entityManager->getRepository(Curso::class);
 $cursos = $repositorioDeCursos->findAll();
 ?>
 <!DOCTYPE html>
