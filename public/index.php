@@ -2,21 +2,19 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Alura\Phpweb\Controller\FormularioDeInsercao;
-use Alura\Phpweb\Controller\ListarCursos;
+use Alura\Phpweb\Controller\InterfaceControlaRequisicao;
 
-// fazer log de todas as requisições
+$caminho = $_SERVER['PATH_INFO'];
+$rotas = require __DIR__ . '/../config/routes.php';
 
-switch ($_SERVER['PATH_INFO']) {
-    case '/listar-cursos':
-        $controlador = new ListarCursos();
-        $controlador->processaRequisicao();
-        break;
-    case '/novo-curso':
-        $controlador = new FormularioDeInsercao();
-        $controlador->processaRequisicao();
-        break;
-    default:
-        echo "Erro 404";
-        break;
+if (!array_key_exists($caminho, $rotas)) {
+    http_response_code(404);
+    exit();
 }
+
+$classControladora = $rotas[$caminho];
+/**
+ * @var InterfaceControlaRequisicao $controlador
+ */
+$controlador = new $classControladora();
+$controlador->processaRequisicao();
