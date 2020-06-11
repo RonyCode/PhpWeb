@@ -6,7 +6,8 @@ use Alura\Phpweb\Entity\Curso;
 use Alura\Phpweb\Infra\EntityManagerCreator;
 use Alura\Phpweb\Controller\InterfaceControlaRequisicao;
 
-class ListarCursos implements InterfaceControlaRequisicao
+class ListarCursos extends ControllerComHtml implements
+    InterfaceControlaRequisicao
 {
     private $repositorioDeCursos;
 
@@ -20,8 +21,9 @@ class ListarCursos implements InterfaceControlaRequisicao
 
     public function processaRequisicao(): void
     {
-        $cursos = $this->repositorioDeCursos->findAll();
-        $titulo = 'Lista de Curso';
-        require __DIR__ . '/../../view/cursos/listar-cursos.php';
+        echo $this->renderizaHtml('cursos/listar-cursos.php', [
+            'cursos' => $this->repositorioDeCursos->findAll(),
+            'titulo' => 'Lista de cursos',
+        ]);
     }
 }
