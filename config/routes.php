@@ -4,8 +4,10 @@ use Alura\Phpweb\Controller\{
     Exclusao,
     FormularioDeEdicao,
     FormularioDeInsercao,
+    Formulariologin,
     ListarCursos,
-    Persistencia
+    Persistencia,
+    RealizarLogin
 };
 
 return [
@@ -14,4 +16,6 @@ return [
     '/salvar-curso' => Persistencia::class,
     '/excluir-curso' => Exclusao::class,
     '/alterar-curso' => FormularioDeEdicao::class,
+    '/login' => Formulariologin::class,
+    '/realiza-login' => RealizarLogin::class,
 ];
