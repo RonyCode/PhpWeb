@@ -22,7 +22,9 @@ class RealizarLogin implements InterfaceControlaRequisicao
         $email = \filter_input(\INPUT_POST, 'email', \FILTER_VALIDATE_EMAIL);
 
         if (\is_null($email) || $email === \false) {
-            echo 'E-mail digitado não é válido';
+            $_SESSION['tipo_mensagem'] = 'danger';
+            $_SESSION['mensagem'] = 'O e-mail digitado é inválido!';
+            \header('Location: /login');
             return;
         }
         $senha = \filter_input(\INPUT_POST, 'senha', \FILTER_SANITIZE_STRING);
@@ -32,9 +34,12 @@ class RealizarLogin implements InterfaceControlaRequisicao
         $usuario = $this->repositorioDeUsuarios->findOneBy(['email' => $email]);
 
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)) {
-            echo 'E-mail ou senha inexistentes.';
+            $_SESSION['tipo_mensagem'] = 'danger';
+            $_SESSION['mensagem'] = 'E-mail ou senha inexistentes.';
+            \header('Location: /login');
             return;
         }
+        $_SESSION['logado'] = \true;
         \header('Location: /listar-cursos');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Alura\Phpweb\Controller\{
+    Deslogar,
     Exclusao,
     FormularioDeEdicao,
     FormularioDeInsercao,
@@ -18,4 +19,5 @@ return [
     '/alterar-curso' => FormularioDeEdicao::class,
     '/login' => Formulariologin::class,
     '/realiza-login' => RealizarLogin::class,
+    '/logout' => Deslogar::class,
 ];
