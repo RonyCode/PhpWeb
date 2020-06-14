@@ -5,10 +5,12 @@ namespace Alura\Phpweb\Controller;
 use Alura\Phpweb\Entity\Curso;
 use Alura\Phpweb\Infra\EntityManagerCreator;
 use Alura\Phpweb\Controller\InterfaceControlaRequisicao;
+use Alura\Phpweb\Helper\RenderizadorDeHtmlTrait;
 
-class ListarCursos extends ControllerComHtml implements
-    InterfaceControlaRequisicao
+class ListarCursos implements InterfaceControlaRequisicao
 {
+    use RenderizadorDeHtmlTrait;
+
     private $repositorioDeCursos;
 
     public function __construct()

@@ -3,11 +3,13 @@
 namespace Alura\Phpweb\Controller;
 
 use Alura\Phpweb\Entity\Curso;
+use Alura\Phpweb\Helper\RenderizadorDeHtmlTrait;
 use Alura\Phpweb\Infra\EntityManagerCreator;
 
-class FormularioDeEdicao extends ControllerComHtml implements
-    InterfaceControlaRequisicao
+class FormularioDeEdicao implements InterfaceControlaRequisicao
 {
+    use RenderizadorDeHtmlTrait;
+
     private $repositorioCursos;
 
     public function __construct()

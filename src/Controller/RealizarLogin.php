@@ -3,10 +3,13 @@
 namespace Alura\Phpweb\Controller;
 
 use Alura\Phpweb\Entity\Usuario;
+use Alura\Phpweb\Helper\FlashMessageTrait;
 use Alura\Phpweb\Infra\EntityManagerCreator;
 
 class RealizarLogin implements InterfaceControlaRequisicao
 {
+    use FlashMessageTrait;
+
     private $repositorioDeUsuarios;
 
     public function __construct()
@@ -22,8 +25,7 @@ class RealizarLogin implements InterfaceControlaRequisicao
         $email = \filter_input(\INPUT_POST, 'email', \FILTER_VALIDATE_EMAIL);
 
         if (\is_null($email) || $email === \false) {
-            $_SESSION['tipo_mensagem'] = 'danger';
-            $_SESSION['mensagem'] = 'O e-mail digitado é inválido!';
+            $this->defineMensagem('danger', 'O e-mail digitado é inválido!');
             \header('Location: /login');
             return;
         }
@@ -34,8 +36,7 @@ class RealizarLogin implements InterfaceControlaRequisicao
         $usuario = $this->repositorioDeUsuarios->findOneBy(['email' => $email]);
 
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)) {
-            $_SESSION['tipo_mensagem'] = 'danger';
-            $_SESSION['mensagem'] = 'E-mail ou senha inexistentes.';
+            $this->defineMensagem('danger', 'E-mail ou senha inexistentes.');
             \header('Location: /login');
             return;
         }

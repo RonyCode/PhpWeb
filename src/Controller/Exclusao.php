@@ -3,10 +3,12 @@
 namespace Alura\Phpweb\Controller;
 
 use Alura\Phpweb\Entity\Curso;
+use Alura\Phpweb\Helper\FlashMessageTrait;
 use Alura\Phpweb\Infra\EntityManagerCreator;
 
 class Exclusao implements InterfaceControlaRequisicao
 {
+    use FlashMessageTrait;
     private $entityManager;
 
     public function __construct()
@@ -24,8 +26,7 @@ class Exclusao implements InterfaceControlaRequisicao
 
         $curso = $this->entityManager->getReference(Curso::class, $id);
         $this->entityManager->remove($curso);
-        $_SESSION['tipo_mensagem'] = 'warning';
-        $_SESSION['mensagem'] = 'Você excluiu o curso';
+        $this->defineMensagem('warning', 'Curso excluído');
         \header('Location: /listar-cursos');
         $this->entityManager->flush();
         header('Location:/listar-cursos');

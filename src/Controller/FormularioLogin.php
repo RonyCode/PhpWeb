@@ -2,9 +2,12 @@
 
 namespace Alura\Phpweb\Controller;
 
-class Formulariologin extends ControllerComHtml implements
-    InterfaceControlaRequisicao
+use Alura\Phpweb\Helper\RenderizadorDeHtmlTrait;
+
+class Formulariologin implements InterfaceControlaRequisicao
 {
+    use RenderizadorDeHtmlTrait;
+
     public function processaRequisicao(): void
     {
         echo $this->renderizaHtml('login/formulario.php', [
