@@ -3,33 +3,45 @@
 namespace Alura\Phpweb\Controller;
 
 use Alura\Phpweb\Entity\Usuario;
+use Psr\Http\Message\ResponseInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Alura\Phpweb\Helper\FlashMessageTrait;
 use Alura\Phpweb\Infra\EntityManagerCreator;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class RealizarLogin implements InterfaceControlaRequisicao
+class RealizarLogin implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
-    private $repositorioDeUsuarios;
+    private $repositorioDeUsuario;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $entityManager = (new EntityManagerCreator())->getEntityManager();
-        $this->repositorioDeUsuarios = $entityManager->getRepository(
+        $this->repositorioDeUsuario = $entityManager->getRepository(
             Usuario::class
         );
     }
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $email = \filter_input(\INPUT_POST, 'email', \FILTER_VALIDATE_EMAIL);
+        $email = filter_var(
+            $request->getParsedBody()['email'],
+            \FILTER_VALIDATE_EMAIL
+        );
 
+        $resposta = new Response(302, ['Location' => '/login']);
         if (\is_null($email) || $email === \false) {
             $this->defineMensagem('danger', 'O e-mail digitado é inválido!');
-            \header('Location: /login');
-            return;
+            return $resposta;
         }
-        $senha = \filter_input(\INPUT_POST, 'senha', \FILTER_SANITIZE_STRING);
+
+        $senha = filter_var(
+            $request->getParsedBody()['senha'],
+            FILTER_SANITIZE_STRING
+        );
+
         /**
          * @var Usuario $usuario
          */
@@ -37,10 +49,9 @@ class RealizarLogin implements InterfaceControlaRequisicao
 
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)) {
             $this->defineMensagem('danger', 'E-mail ou senha inexistentes.');
-            \header('Location: /login');
-            return;
+            return $resposta;
         }
         $_SESSION['logado'] = \true;
-        \header('Location: /listar-cursos');
+        return new Response(302, ['Location' => '/listar-cursos']);
     }
 }

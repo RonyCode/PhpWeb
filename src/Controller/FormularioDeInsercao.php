@@ -2,17 +2,21 @@
 
 namespace Alura\Phpweb\Controller;
 
-use Alura\Phpweb\Controller\InterfaceControlaRequisicao;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Alura\Phpweb\Helper\RenderizadorDeHtmlTrait;
 
-class FormularioDeInsercao implements InterfaceControlaRequisicao
+class FormularioDeInsercao implements RequestHandlerInterface
 {
     use RenderizadorDeHtmlTrait;
 
-    public function processaRequisicao(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        echo $this->renderizaHtml('cursos/formularios.php', [
+        $html = $this->renderizaHtml('cursos/formularios.php', [
             'titulo' => 'Novo curso',
         ]);
+        return new Response(200, [], $html);
     }
 }
