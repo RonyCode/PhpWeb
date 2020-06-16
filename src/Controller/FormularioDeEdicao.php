@@ -26,7 +26,7 @@ class FormularioDeEdicao implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = filter_var(
+        $id = \filter_var(
             $request->getQueryParams()['id'],
             \FILTER_VALIDATE_INT
         );
@@ -36,10 +36,12 @@ class FormularioDeEdicao implements RequestHandlerInterface
             return $resposta;
         }
         $curso = $this->repositorioCursos->find($id);
+
         $html = $this->renderizaHtml('cursos/formularios.php', [
             'curso' => $curso,
             'titulo' => 'Alterar curso: ' . $curso->getDescricao(),
         ]);
+
         return new Response(200, [], $html);
     }
 }

@@ -6,7 +6,7 @@ use Alura\Phpweb\Entity\Usuario;
 use Psr\Http\Message\ResponseInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Alura\Phpweb\Helper\FlashMessageTrait;
-use Alura\Phpweb\Infra\EntityManagerCreator;
+use Doctrine\Persistence\ObjectRepository;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -15,6 +15,9 @@ class RealizarLogin implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
+    /**
+     * @var ObjectRepository $repositorioDeUsuario
+     */
     private $repositorioDeUsuario;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -37,21 +40,20 @@ class RealizarLogin implements RequestHandlerInterface
             return $resposta;
         }
 
-        $senha = filter_var(
-            $request->getParsedBody()['senha'],
-            FILTER_SANITIZE_STRING
-        );
+        $senha = \filter_input(\INPUT_POST, 'senha', \FILTER_SANITIZE_STRING);
 
         /**
          * @var Usuario $usuario
          */
-        $usuario = $this->repositorioDeUsuarios->findOneBy(['email' => $email]);
+        $usuario = $this->repositorioDeUsuario->findOneBy(['email' => $email]);
 
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)) {
             $this->defineMensagem('danger', 'E-mail ou senha inexistentes.');
+
             return $resposta;
         }
         $_SESSION['logado'] = \true;
+
         return new Response(302, ['Location' => '/listar-cursos']);
     }
 }

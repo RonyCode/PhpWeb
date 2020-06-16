@@ -7,20 +7,20 @@ use Alura\Phpweb\Entity\Curso;
 use Psr\Http\Message\ResponseInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Alura\Phpweb\Helper\FlashMessageTrait;
-use Alura\Phpweb\Infra\EntityManagerCreator;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class Persistencia implements RequestHandlerInterface
 {
     use FlashMessageTrait;
+
     /**
      *
-     * @var EntityManagerInterface $entityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
-    public function __construct(EntityManagerCreator $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
@@ -35,12 +35,11 @@ class Persistencia implements RequestHandlerInterface
         $curso = new Curso();
         $curso->setDescricao($descricao);
 
-        $id = filter_input(
+        $id = filter_var(
             $request->getQueryParams()['id'],
             \FILTER_VALIDATE_INT
         );
 
-        $resposta = new Response(302, ['Location' => '/listar-cursos']);
         $tipo = 'success';
         if (!is_null($id) && $id !== false) {
             $curso->setId($id);
@@ -53,6 +52,6 @@ class Persistencia implements RequestHandlerInterface
 
         $this->entityManager->flush();
 
-        return $resposta;
+        return new Response(302, ['Location' => '/listar-cursos']);
     }
 }

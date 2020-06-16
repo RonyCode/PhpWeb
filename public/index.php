@@ -1,8 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -14,6 +15,7 @@ if (!array_key_exists($caminho, $rotas)) {
     http_response_code(404);
     exit();
 }
+
 \session_start();
 $ehRotaDeLogin = stripos($caminho, 'login');
 if (!isset($_SESSION['logado']) && $ehRotaDeLogin === false) {

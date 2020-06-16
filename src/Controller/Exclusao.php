@@ -14,6 +14,9 @@ class Exclusao implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
+    /**
+     * @var EntityManagerInterface $entityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
