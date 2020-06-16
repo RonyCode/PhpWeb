@@ -1,6 +1,8 @@
 <?php
 
 use Alura\Phpweb\Controller\{
+    CursosEmJson,
+    CursosEmXml,
     Deslogar,
     Exclusao,
     FormularioDeEdicao,
@@ -20,4 +22,6 @@ return [
     '/login' => Formulariologin::class,
     '/realiza-login' => RealizarLogin::class,
     '/logout' => Deslogar::class,
+    '/buscarCursosEmJson' => CursosEmJson::class,
+    '/buscarCursosEmXml' => CursosEmXml::class,
 ];
